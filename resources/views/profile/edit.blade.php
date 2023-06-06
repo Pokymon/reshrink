@@ -20,9 +20,9 @@
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
     </form>
-    <form class="card" method="post" action="{{ route('profile.update') }}">
+    <form class="card" method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data">
         @csrf
-        @method('put')
+        @method('patch')
       <div class="card-header">
         <h3 class="card-title">My Profile</h3>
       </div>
@@ -58,6 +58,10 @@
                 </div>
             @endif
         </div>
+        <div class="mb-3">
+            <label class="form-label">Profile Photo</label>
+            <input class="form-control @error('photo') is-invalid @enderror" type="file" id="photo" name="photo" placeholder="John Smith" value="{{ old('photo', $user->photo) }}" autofocus autocomplete="photo">
+        </div>
       </div>
       <div class="card-footer text-end">
         <button type="submit" class="btn btn-primary">Save</button>
@@ -67,7 +71,7 @@
 <div class="mt-3 col-12">
     <form class="card" method="post" action="{{ route('password.update') }}">
         @csrf
-        @method('put')
+        @method('patch')
       <div class="card-header">
         <h3 class="card-title">Update Password</h3>
       </div>
