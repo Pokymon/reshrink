@@ -71,7 +71,7 @@
 <div class="mt-3 col-12">
     <form class="card" method="post" action="{{ route('password.update') }}">
         @csrf
-        @method('patch')
+        @method('put')
       <div class="card-header">
         <h3 class="card-title">Update Password</h3>
       </div>
