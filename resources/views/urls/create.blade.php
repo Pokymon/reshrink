@@ -18,6 +18,15 @@
                 @enderror
             </div>
             <div class="mb-3">
+                <label class="form-label">Domain Name</label>
+                <select class="form-select @error('domain_id') is-invalid @enderror" name="domain_id">
+                    <option value="">-- Select Domain --</option>
+                    @foreach($domains as $index => $data)
+                        <option value="{{ $data->id }}" {{ old('domain_id') == $data->id ? 'selected' : '' }}>{{ $data->domain }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mb-3">
                 <input type="submit" value="Save" class="btn btn-primary">
             </div>
             <div class="mb-3">

@@ -1,16 +1,16 @@
 @extends('templates.main')
 @section('title')
-    URLs
+    Domains
 @endsection
 @section('content')
 <h2 class="page-title">
-    URLs
+    Domains
 </h2>
 <div class="card mt-3">
     <div class="card-body">
         <div class="col-12">
             <div class="mb-3">
-                <a href="{{ route('urls.create') }}"><input href="" type="button" value="Create new" class="btn btn-primary"></a>
+                <a href="{{ route('domains.create') }}"><input href="" type="button" value="Create new" class="btn btn-primary"></a>
             </div>
             <form action="" method="get" class="mb-3">
                 <div class="input-group">
@@ -23,33 +23,25 @@
                 <table class="table table-vcenter card-table">
                   <thead>
                     <tr>
-                      <th>Long URL</th>
-                      <th>Shortern URL</th>
-                      <th>Clicks</th>
+                      <th>Domain Name</th>
                       <th>Action</th>
                       <th class="w-1"></th>
                     </tr>
                   </thead>
                   <tbody>
-                  @foreach($urls as $index => $data)
+                  @foreach($domains as $index => $data)
                     <tr>
                       <td>
-                        <a href="{{ $data->url }}" target="_blank">{{ $data->url }}</a>
+                        {{ $data->domain }}
                       </td>
                       <td>
-                        <a href="{{ route('urls.show', ['domain' => $data->domain->domain, 'code' => $data->code]) }}" target="_blank" id="shortenedUrl{{ $index }}">{{ route('urls.show', ['domain' => $data->domain->domain, 'code' => $data->code]) }}</a>
-                      </td>
-                      <td>
-                        {{ $data->clicks }}
-                      </td>
-                      <td>
-                        <button id="copyButton{{ $index }}" data-clipboard-target="#shortenedUrl{{ $index }}" class="btn btn-primary">Copy</button>
-                        <a href="{{ route('urls.edit', $data->id) }}" class="btn btn-primary">Edit</a>
-                        <form action="{{ route('urls.destroy', $data->id) }}" method="POST" class="d-inline">
+                        @can('destroy', $data)
+                        <form action="{{ route('domains.destroy', $data->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
                         </form>
+                        @endcan
                       </td>
                     </tr>
                   @endforeach
@@ -57,7 +49,7 @@
                 </table>
               </div>
               <div class="card-footer">
-                {{ $urls->links(
+                {{ $domains->links(
                     'pagination::bootstrap-4'
                 ) }}
               </div>

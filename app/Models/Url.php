@@ -12,6 +12,7 @@ class Url extends Model
         'url',
         'code',
         'clicks',
+        'domain_id',
         'user_id',
     ];
 
@@ -27,5 +28,10 @@ class Url extends Model
             $this->generateCode();
         }
         return $code;
+    }
+
+    public function domain()
+    {
+        return $this->belongsTo(Domain::class);
     }
 }

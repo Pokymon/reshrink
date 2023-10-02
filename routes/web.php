@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DomainController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UrlController;
 use App\Models\Url;
@@ -28,12 +29,14 @@ Route::get('/', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('/urls', UrlController::class)->middleware('auth');
-Route::get('/{code}', [UrlController::class, 'show'])->name('urls.show');
+Route::resource('/domains', DomainController::class)->middleware('auth');
+Route::domain('{domain}')->group(function () {
+    Route::get('/{code}', [UrlController::class, 'show'])->name('urls.show');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/user/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/user/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/user/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';

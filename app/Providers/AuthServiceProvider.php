@@ -3,6 +3,11 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App\Models\Domain;
+use App\Models\Url;
+use App\Policies\DomainPolicy;
+use App\Policies\UrlPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -13,7 +18,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        //
+        Url::class => UrlPolicy::class,
+        Domain::class => DomainPolicy::class,
     ];
 
     /**

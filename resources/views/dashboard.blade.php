@@ -37,7 +37,7 @@
                         <a href="{{ $data->url }}" target="_blank">{{ $data->url }}</a>
                       </td>
                       <td>
-                        <a href="{{ route('urls.show', $data->code) }}" target="_blank" id="shortenedUrl{{ $index }}">{{ route('urls.show', $data->code) }}</a>
+                        <a href="{{ route('urls.show', ['domain' => $data->domain->domain, 'code' => $data->code]) }}" target="_blank" id="shortenedUrl{{ $index }}">{{ route('urls.show', ['domain' => $data->domain->domain, 'code' => $data->code]) }}</a>
                       </td>
                       <td>
                         {{ $data->clicks }}

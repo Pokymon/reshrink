@@ -51,4 +51,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Url::class);
     }
+
+    /**
+     * Get all of the domains for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function domains()
+    {
+        return $this->hasMany(Domain::class);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Domain;
 use App\Models\Url;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,10 @@ class UrlController extends Controller
     public function create()
     {
         $user = auth()->user();
-        return view('urls.create', compact('user'));
+        $domains = Domain::where('user_id', $user->id)
+        ->orWhere('is_public', true)
+        ->get();
+        return view('urls.create', compact('user', 'domains'));
     }
 
     /**
@@ -38,12 +42,14 @@ class UrlController extends Controller
     {
         $this->validate($request, [
             'url' => 'required|url',
+            'domain_id' => 'required|exists:domains,id',
         ]);
         $urls = new Url();
         $code = $urls->generateCode();
         $user = auth()->user();
         $urls->url = $request->url;
         $urls->code = $code;
+        $urls->domain_id = $request->domain_id;
         $urls->user_id = $user->id;
         $urls->save();
         return redirect()->route('urls.index');
@@ -52,11 +58,11 @@ class UrlController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $code)
+    public function show(string $domain, string $code)
     {
-        $url = Url::where('code', $code)->firstOrFail();
-        $url->clicks++;
-        $url->save();
+        $domain = Domain::where('domain', $domain)->firstOrFail();
+        $url = Url::where('code', $code)->where('domain_id', $domain->id)->firstOrFail();
+        $url->increment('clicks');
         return redirect($url->url);
     }
 
@@ -67,6 +73,7 @@ class UrlController extends Controller
     {
         $user = auth()->user();
         $urls = Url::findOrFail($id);
+        $this->authorize('update', $urls);
         return view('urls.edit', compact('user', 'urls'));
     }
 
