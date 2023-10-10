@@ -58,10 +58,22 @@ class UrlController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $domain, string $code)
+    public function show($domain, $code)
     {
-        $domain = Domain::where('domain', $domain)->firstOrFail();
-        $url = Url::where('code', $code)->where('domain_id', $domain->id)->firstOrFail();
+        $domainRecord = Domain::where('domain', $domain)->firstOrFail();
+        $url = Url::where([
+            ['code', '=', $code],
+            ['domain_id', '=', $domainRecord->id],
+        ])->firstOrFail();
+
+        $url->increment('clicks');
+        return redirect($url->url);
+    }
+
+    public function showHost($code)
+    {
+        $url = Url::where('code', $code)->firstOrFail();
+
         $url->increment('clicks');
         return redirect($url->url);
     }

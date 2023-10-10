@@ -65,6 +65,9 @@ Route::get('/dashboard', function () {
 
 Route::resource('/urls', UrlController::class)->middleware('auth');
 Route::resource('/domains', DomainController::class)->middleware('auth');
+
+Route::get('/{code}', [UrlController::class, 'showHost'])->name('urls.showHost');
+
 Route::domain('{domain}')->group(function () {
     Route::get('/{code}', [UrlController::class, 'show'])->name('urls.show');
 });

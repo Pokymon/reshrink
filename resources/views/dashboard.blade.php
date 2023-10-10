@@ -37,7 +37,11 @@
                         <a href="{{ $data->url }}" target="_blank">{{ $data->url }}</a>
                       </td>
                       <td>
-                        <a href="{{ route('urls.show', ['domain' => $data->domain->domain, 'code' => $data->code]) }}" target="_blank" id="shortenedUrl{{ $index }}">{{ route('urls.show', ['domain' => $data->domain->domain, 'code' => $data->code]) }}</a>
+                        @if($data->domain)
+                            <a href="{{ route('urls.show', ['domain' => $data->domain->domain, 'code' => $data->code]) }}" target="_blank" id="shortenedUrl{{ $index }}">{{ route('urls.show', ['domain' => $data->domain->domain, 'code' => $data->code]) }}</a>
+                        @else
+                            <a href="{{ route('urls.showHost', ['code' => $data->code]) }}" target="_blank" id="shortenedUrl{{ $index }}">{{ route('urls.showHost', ['code' => $data->code]) }}</a>
+                        @endif
                       </td>
                       <td>
                         {{ $data->clicks }}
