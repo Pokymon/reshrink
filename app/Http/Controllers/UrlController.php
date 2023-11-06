@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Domain;
 use App\Models\Url;
+use App\Rules\ValidUrl;
 use Illuminate\Http\Request;
 
 class UrlController extends Controller
@@ -41,7 +42,7 @@ class UrlController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'url' => 'required|url',
+            'url' => ['required', new ValidUrl],
             'domain_id' => 'required|exists:domains,id',
         ]);
         $urls = new Url();

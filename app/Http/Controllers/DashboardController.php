@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Domain;
-use App\Rules\ValidUrl;
+use App\Models\Url;
 use Illuminate\Http\Request;
 
-class DomainController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,15 +14,19 @@ class DomainController extends Controller
     public function index()
     {
         $user = auth()->user();
+        $urls = Url::where('user_id', $user->id);
         $domains = Domain::where(function ($query) use ($user) {
             $query->where('user_id', $user->id)
                 ->orWhere('is_public', true);
         });
         if (request()->has('search')) {
+            $urls = $urls->where('url', 'like', '%' . request()->search . '%')
+                ->orWhere('code', 'like', '%' . request()->search . '%');
             $domains = $domains->where('domain', 'like', '%' . request()->search . '%');
         }
-        $domains = $domains->latest()->paginate(10);
-        return view('domains.index', compact('user', 'domains'));
+        $urls = $urls->latest()->paginate(5);
+        $domains = $domains->latest()->paginate(5);
+        return view('dashboard', compact('user', 'urls', 'domains'));
     }
 
     /**
@@ -30,8 +34,7 @@ class DomainController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
-        return view('domains.create', compact('user'));
+        //
     }
 
     /**
@@ -39,15 +42,7 @@ class DomainController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'domain' => ['required', 'unique:domains,domain', new ValidUrl],
-        ]);
-        $domains = new Domain();
-        $user = auth()->user();
-        $domains->domain = $request->domain;
-        $domains->user_id = $user->id;
-        $domains->save();
-        return redirect()->route('domains.index');
+        //
     }
 
     /**
@@ -79,16 +74,6 @@ class DomainController extends Controller
      */
     public function destroy(string $id)
     {
-        $domains = Domain::findOrFail($id);
-        $this->authorize('destroy', $domains);
-        if ($domains->urls()->count() > 0) {
-            echo "<script type='text/javascript'>
-                    alert('Domain cannot be deleted because it has urls.');
-                    window.location.href='/domains';
-                  </script>";
-        } else {
-            $domains->delete();
-            return redirect()->route('domains.index');
-        }
+        //
     }
 }

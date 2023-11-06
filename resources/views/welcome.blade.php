@@ -50,7 +50,7 @@
                 <div class="col text-center">
                     <h1>Reshrink your URL!</h1>
                     <p class="lead">Reshrink is a free URL shortener service that allows you to create short links for your long links.</p>
-                    <form action="{{ route('welcome.store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="input-group">
                             <input type="text" class="form-control @error('url') is-invalid @enderror" name="url" placeholder="Enter your long URL here..." value="{{ old('url') }}">
@@ -66,7 +66,7 @@
                             <br>
                             Shortened URL: <a href="{{ session('shortenedUrl') }}" target="_blank" id="shortUrl">{{ session('shortenedUrl') }}</a>
                             <span onclick="copyUrl()">
-                                <i class="fas fa-copy"></i>
+                                <i class="fas fa-copy mx-1"></i>
                             </span>
                         </div>
                     @endif
