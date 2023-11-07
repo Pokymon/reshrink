@@ -13,7 +13,7 @@
             @method('put')
             <div class="mb-3">
                 <label class="form-label">Shortern URL</label>
-                <input type="text" class="form-control @error('code') is-invalid @enderror" name="code" placeholder="Enter the link" value="{{ $urls->code }}">
+                <input type="text" class="form-control @error('code') is-invalid @enderror" name="code" placeholder="Enter your desired shortern URL" value="{{ $urls->code }}">
                 @error('code')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

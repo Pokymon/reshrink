@@ -43,13 +43,14 @@ class UrlController extends Controller
     {
         $this->validate($request, [
             'url' => ['required', new ValidUrl],
+            'code' => 'nullable|alpha_dash|unique:urls,code',
             'domain_id' => 'required|exists:domains,id',
         ]);
         $urls = new Url();
         $code = $urls->generateCode();
         $user = auth()->user();
         $urls->url = $request->url;
-        $urls->code = $code;
+        $urls->code = empty($request->code) ? $code : $request->code;
         $urls->domain_id = $request->domain_id;
         $urls->user_id = $user->id;
         $urls->save();

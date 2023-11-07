@@ -20,11 +20,17 @@
             <div class="mb-3">
                 <label class="form-label">Domain Name</label>
                 <select class="form-select @error('domain_id') is-invalid @enderror" name="domain_id">
-                    <option value="">-- Select Domain --</option>
                     @foreach($domains as $index => $data)
                         <option value="{{ $data->id }}" {{ old('domain_id') == $data->id ? 'selected' : '' }}>{{ $data->domain }}</option>
                     @endforeach
                 </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Shortern URL</label>
+                <input type="text" class="form-control @error('code') is-invalid @enderror" name="code" placeholder="Enter your desired shortern URL" value="{{ old('code') }}">
+                @error('code')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
             <div class="mb-3">
                 <input type="submit" value="Save" class="btn btn-primary">
