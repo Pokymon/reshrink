@@ -23,9 +23,9 @@ This project is built with Laravel. Follow these steps to get it running on your
 
 4. Install Composer if you haven't already. You can download it from [getcomposer.org](https://getcomposer.org/).
 
-5. Install project dependencies with Composer by running:
+5. Update project dependencies with Composer by running:
     ```bash
-    composer install
+    composer update
     ```
 
 6. Generate the application key:
