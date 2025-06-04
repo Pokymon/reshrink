@@ -23,12 +23,12 @@ class CustomVerifyEmail extends BaseVerifyEmail
   public function toMail($notifiable): MailMessage
   {
     return (new MailMessage)
-      ->subject(__('Verifikasi Alamat Email'))
-      ->greeting(__('Hai!'))
-      ->line(__('Selamat datang di Imoji!'))
-      ->line(__('Silakan klik tombol di bawah ini untuk memverifikasi alamat email Anda dan mengaktifkan akun Anda.'))
-      ->action(__('Verifikasi Alamat Email'), $this->verificationUrl($notifiable))
-      ->line(__('Jika Anda tidak mendaftar di Imoji, silakan abaikan email ini.'));
+      ->subject(__('Verify Email Address'))
+      ->greeting(__('Hello!'))
+      ->line(__('Welcome to Reshrink!'))
+      ->line(__('Please click the button below to verify your email address and activate your account.'))
+      ->action(__('Verify Email Address'), $this->verificationUrl($notifiable))
+      ->line(__('If you did not sign up for Reshrink, please ignore this email.'));
   }
 
   public function toArray(object $notifiable): array
