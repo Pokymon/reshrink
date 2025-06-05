@@ -22,7 +22,7 @@ class LinkController extends Controller
   {
     $links = Auth::user()->links()->withCount('clicks')->latest()->get();
 
-    return Inertia::render('dashboard', [
+    return Inertia::render('links', [
       'links' => $links,
     ]);
   }
