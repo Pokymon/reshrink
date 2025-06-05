@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Notifications\CustomResetPassword;
 use App\Notifications\CustomVerifyEmail;
-use App\Traits\UuidTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,7 +13,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable  implements MustVerifyEmail
 {
-  use HasFactory, Notifiable, UuidTrait, SoftDeletes;
+  use HasFactory, Notifiable, HasUuids, SoftDeletes;
 
   protected $fillable = [
     'name',

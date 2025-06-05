@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Traits\UuidTrait;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LinkClick extends Model
 {
-  use HasFactory, UuidTrait;
+  use HasFactory, HasUuids;
 
   protected $fillable = [
     'link_id',
