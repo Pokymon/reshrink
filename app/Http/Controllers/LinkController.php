@@ -12,7 +12,7 @@ class LinkController extends Controller
 {
   use AuthorizesRequests;
 
-  private function generateRandomString($length = 3)
+  private function generateRandomString($length = 5)
   {
     $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
     return substr(str_shuffle(str_repeat($characters, $length)), 0, $length);
@@ -45,7 +45,7 @@ class LinkController extends Controller
       $shortUrl = $request->get('short_url');
     } else {
       do {
-        $shortUrl = $this->generateRandomString(3);
+        $shortUrl = $this->generateRandomString(5);
       } while (Link::where('user_id', Auth::id())
         ->where('short_url', $shortUrl)
         ->exists()
@@ -58,9 +58,7 @@ class LinkController extends Controller
     $link->user_id = Auth::id();
     $link->save();
 
-    return back()->with([
-      'flash' => ['success' => 'Link telah ditambahkan ke daftar link.'],
-    ]);
+    return back();
   }
 
   public function show(Link $link)
@@ -93,9 +91,7 @@ class LinkController extends Controller
     $link->short_url = $request->get('short_url');
     $link->save();
 
-    return back()->with([
-      'flash' => ['success' => 'Link telah diperbarui.'],
-    ]);
+    return back();
   }
 
   public function destroy(Link $link)
@@ -104,8 +100,6 @@ class LinkController extends Controller
 
     $link->delete();
 
-    return back()->with([
-      'flash' => ['success' => 'Link telah dihapus dari daftar link.'],
-    ]);
+    return back();
   }
 }
