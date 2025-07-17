@@ -1,6 +1,15 @@
-import AppLayout from "@/layouts/app-layout";
-import { type BreadcrumbItem } from "@/types";
+import { useState } from "react";
 import { Head, useForm } from "@inertiajs/react";
+import { toast } from "sonner";
+import {
+  Copy,
+  ExternalLink,
+  MoreVertical,
+  Plus,
+  Trash2,
+  Edit,
+} from "lucide-react";
+import AppLayout from "@/layouts/app-layout";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -45,16 +54,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Copy,
-  ExternalLink,
-  MoreVertical,
-  Plus,
-  Trash2,
-  Edit,
-} from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
+import { type BreadcrumbItem } from "@/types";
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -73,16 +73,17 @@ interface Link {
   updated_at: string;
 }
 
-interface LinksProps {
+interface Props {
   links: Link[];
 }
 
-export default function Links({ links = [] }: LinksProps) {
+export default function Links({ links = [] }: Props) {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [editingLink, setEditingLink] = useState<Link | null>(null);
   const [deletingLink, setDeletingLink] = useState<Link | null>(null);
+  const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
 
   const {
     data,
@@ -110,6 +111,7 @@ export default function Links({ links = [] }: LinksProps) {
   };
 
   const openEditDialog = (link: Link) => {
+    setOpenDropdownId(null);
     setEditingLink(link);
     setData({
       url: link.url,
@@ -132,6 +134,7 @@ export default function Links({ links = [] }: LinksProps) {
   };
 
   const openDeleteDialog = (link: Link) => {
+    setOpenDropdownId(null);
     setDeletingLink(link);
     setIsDeleteDialogOpen(true);
   };
@@ -237,13 +240,6 @@ export default function Links({ links = [] }: LinksProps) {
                             </div>
                           </div>
                           <DialogFooter>
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => setIsCreateDialogOpen(false)}
-                            >
-                              Cancel
-                            </Button>
                             <Button type="submit" disabled={processing}>
                               {processing ? "Creating..." : "Create Link"}
                             </Button>
@@ -327,7 +323,12 @@ export default function Links({ links = [] }: LinksProps) {
                                 {formatDate(link.created_at)}
                               </TableCell>
                               <TableCell className="text-right">
-                                <DropdownMenu>
+                                <DropdownMenu
+                                  open={openDropdownId === link.id}
+                                  onOpenChange={(open) =>
+                                    setOpenDropdownId(open ? link.id : null)
+                                  }
+                                >
                                   <DropdownMenuTrigger asChild>
                                     <Button variant="ghost" size="sm">
                                       <MoreVertical className="h-4 w-4" />
@@ -335,9 +336,10 @@ export default function Links({ links = [] }: LinksProps) {
                                   </DropdownMenuTrigger>
                                   <DropdownMenuContent align="end">
                                     <DropdownMenuItem
-                                      onClick={() =>
-                                        copyToClipboard(link.short_url)
-                                      }
+                                      onClick={() => {
+                                        copyToClipboard(link.short_url);
+                                        setOpenDropdownId(null);
+                                      }}
                                     >
                                       <Copy className="h-4 w-4 mr-2" />
                                       Copy Link
@@ -370,7 +372,6 @@ export default function Links({ links = [] }: LinksProps) {
         </div>
       </div>
 
-      {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <form onSubmit={handleEditLink}>
@@ -411,17 +412,6 @@ export default function Links({ links = [] }: LinksProps) {
               </div>
             </div>
             <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  setIsEditDialogOpen(false);
-                  setEditingLink(null);
-                  reset();
-                }}
-              >
-                Cancel
-              </Button>
               <Button type="submit" disabled={processing}>
                 {processing ? "Updating..." : "Update Link"}
               </Button>
@@ -430,7 +420,6 @@ export default function Links({ links = [] }: LinksProps) {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
       <AlertDialog
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
