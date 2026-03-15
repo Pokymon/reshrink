@@ -61,4 +61,4 @@ Reshrink is distributed under the MIT License. See the `LICENSE` file for more i
 
 ## Contact
 
-If you have any questions or suggestions, feel free to reach out at business@pokymons.com.
+If you have any questions or suggestions, feel free to reach out at fauqi@pokymon.com.
